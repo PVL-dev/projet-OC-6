@@ -1,51 +1,116 @@
-let url = (new URL(document.location.href));
-let photographerID = url.searchParams.get('id');
+import { getJsonData } from "/scripts/utils/getJsonData.js";
+import { photographer, medias } from "/scripts/utils/Objects.js";
+import { displayModal, closeModal } from "/scripts/utils/contactForm.js";
 
-async function getPhotographerInfos() {
-    // Récupère et compile les infos du photographe depuis le Json en fonction de son ID
+const url = (new URL(document.location.href));
+const photographerID = url.searchParams.get('id');
 
-    let jsonFile = "data/photographers.json";
+let fullData; // Contiendra toutes les données du JSON "brutes"
+let currentPhotographer; // Contiendra uniquement les données filtrées du photographe
+let currentMedias; // Contiendra tous les médias de ce photographe
 
-    let response = await fetch(jsonFile);
-    let data = await response.json();
-    let photographers = await data.photographers;
-    
-    function filterByID(obj) {
-        if (obj.id == photographerID) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
-    let photographer = photographers.filter(filterByID);
 
-    return ({
-        photographer: [...photographer]});
-}
+const startDrawingPage = async() => {
+// Récupére les données du fichier JSON et lance la fonction de création du photograph-header
+    fullData = await getJsonData();
+    headerDrawer();
+};
 
-async function displayData(photographer) {
-    // Envoi les données du photographe au factory Page, récupère la page générée et l'ajoute au DOM
-    const headerText = document.querySelector(".photograph-header_text");
-    const headerImg = document.querySelector(".photograph-header_img");
 
-    photographer.forEach((element) => {
-        const photographerPageModel = photographerPageFactory(element);
+const headerDrawer = () => {
+// Génére un objet photographe puis la partie photograph-header à partir de cet objet
+    createPhotographer();
+    const cP = currentPhotographer;
+    const container = document.querySelector(".photograph-header");
+    const newHtmlHeader =`
+        <div class="photograph-header_text">
+            <h1>${cP.name}</h1>
+            <h3>${cP.city}, ${cP.country}</h3>
+            <p>${cP.tagline}</p>
+        </div>
+        <button class="contact_button">Contactez-moi</button>
+        <div class="photograph-header_img">
+            <img src="photos/Photographers_ID_Photos/${cP.portrait+"_thumbnail.jpg"}" alt="Photo de profil de ${cP.name}"/>
+        </div>`;
+    container.innerHTML = newHtmlHeader;
 
-        const generatedText = photographerPageModel.getHeaderTextDOM();
-        headerText.appendChild(generatedText);
-        console.log(generatedText);
+    mediasDrawer();
+};
 
-        const generatedImg = photographerPageModel.getHeaderImgDOM();
-        headerImg.appendChild(generatedImg);
-        console.log(generatedImg);
+const createPhotographer = () => {
+// Crée l'objet photographer correspondant à l'ID récupéré dans l'URL
+    fullData.photographersData.forEach(e => {
+        if (e.id.toString() === photographerID) {
+            currentPhotographer = new photographer(e.name, e.id, e.city, e.country, e.tagline, e.price, e.portrait)
+        };
     });
 };
 
-async function init() {
-    // Initialise la fonction de récupération des données du photographe puis la fonction de génération de la page
-    const { photographer } = await getPhotographerInfos();
-    displayData(photographer);
+
+const mediasDrawer = () => {
+// Génére la partie medias_section
+    createMedias();
+    const container = document.querySelector(".medias_container");
+    currentMedias.forEach(e => {
+        let newHtmlMedia;
+        const newCardElement = document.createElement("div");
+        newCardElement.setAttribute("class", "media-card");
+        newCardElement.setAttribute("id", e.id);
+        if (e.constructor.name === "image") {
+            newHtmlMedia =`
+            <img tabindex="0" src="photos/${currentPhotographer.name}/${e.image}" alt="Photo intitulée : ${e.title}" title="Photo intitulée : ${e.title}">`;
+        } else {
+            newHtmlMedia =`
+            <video tabindex="0" title="Vidéo intitulée : ${e.title}" width="350" height="300">
+            <source src="photos/${currentPhotographer.name}/${e.video}" type="video/mp4">
+            Votre navigateur ne supporte pas le lecteur de vidéos.
+            </video>`;
+        };
+        let newHtmlCard = newHtmlMedia +`
+        <div class="media-card_text">
+            <h3>${e.title}</h3>
+            <div class="media-likes">
+                <p>${e.likes}</p>
+                <i class="fas fa-heart" tabindex="0" aria-label="Bouton J'aime, cliquable"></i>
+            </div>
+        </div>`;
+        
+        container.appendChild(newCardElement);
+        newCardElement.innerHTML = newHtmlCard;
+    });
+
+    insertDrawer();
 };
 
-init();
+const createMedias = () => {
+// Crée les objets médias à partir de l'ensemble des médias du photographe
+    currentMedias = [];
+    fullData.mediasData.forEach(e => {
+        if (e.photographerId.toString() === photographerID) {
+            currentMedias.push(new medias(e.id, e.photographerId, e.title, e.likes, e.date, e.price).createMedia(e)); // Crée un objet de la classe medias
+        };
+    });
+};
+
+
+const insertDrawer = () => {
+// Génére l'insert des likes et du prix journalier en bas de page
+    let totalLikes = 0;
+    currentMedias.forEach(e => {
+        totalLikes += e.likes;
+    });
+
+    const priceAndLikeInsert = document.querySelector(".priceandlike-insert");
+    const newHtmlInsert = `
+        <p>${totalLikes}</p>
+        <i class="fas fa-heart"></i>
+        <p>${currentPhotographer.price}€ / jour</p>`;
+    priceAndLikeInsert.innerHTML = newHtmlInsert;
+};
+
+
+// Lance le script si on est bien sur la page photographer.hmtl
+const body = document.querySelector("body");
+if (body.classList.contains("photographer-page")) {
+    document.body.onload = startDrawingPage
+};

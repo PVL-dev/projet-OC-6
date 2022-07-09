@@ -1,31 +1,46 @@
-async function getPhotographers() {
-    // Récupère et compile les infos des photographes depuis le Json dans la constante "photographers"
+import { getJsonData } from "/scripts/utils/getJsonData.js";
+import { photographer } from "/scripts/utils/Objects.js";
 
-    let jsonFile = "data/photographers.json";
+let fullData; // Contiendra toutes les données du JSON "brutes"
+let photographersArray = [];
 
-    let response = await fetch(jsonFile);
-    let data = await response.json();
-    let photographers = await data.photographers;
 
-    return ({
-        photographers: [...photographers]});
-}
+const startDrawingPage = async() => {
+// Récupére les données du fichier JSON, les interpréte et lance la fonction de création de la page
+    fullData = await getJsonData();
+    fullData.photographersData.forEach(e => {
+        photographersArray.push(new photographer(e.name, e.id, e.city, e.country, e.tagline, e.price, e.portrait))
+    });
+    pageDrawer();
+};
 
-async function displayData(photographers) {
-    // Envoi les données des photographes au factory Card, récupère les cartes générées et les ajoute au DOM
-    const photographersSection = document.querySelector(".photographer_section");
 
-    photographers.forEach((photographer) => {
-        const photographerCardModel = photographerCardFactory(photographer);
-        const generatedCards = photographerCardModel.getPhotographerCardDOM();
-        photographersSection.appendChild(generatedCards);
+const pageDrawer = () => {
+// Génére un objet photographe puis la partie photograph-header à partir de cet objet
+    photographersArray.forEach(e => {
+        const container = document.querySelector(".photographer_section");
+        const newCard = document.createElement("div");
+        newCard.setAttribute("class", "card_container")
+        const picture = `photos/Photographers_ID_Photos/${e.portrait+"_thumbnail.jpg"}`;
+        const newHtml =`
+            <a href="photographer.html?id=${e.id}">
+                <img src="${picture}" alt="">
+                <h2>${e.name}</h2>
+            </a>
+            <div class="text_container">
+                <h3>${e.city}, ${e.country}</h3>
+                <h4>${e.tagline}</h4>
+                <p>${e.price}€/jour</p>
+            </div>`;
+        
+        container.appendChild(newCard);
+        newCard.innerHTML = newHtml;
     });
 };
 
-async function init() {
-    // Initialise la fonction de récupération des données des photographes puis la fonction de génération des cartes
-    const { photographers } = await getPhotographers();
-    displayData(photographers);
-};
 
-init();
+// Lance le script si on est bien sur la page index.hmtl
+const body = document.querySelector("body") 
+if (body.classList.contains("index-page")) {
+    document.body.onload = startDrawingPage
+};
