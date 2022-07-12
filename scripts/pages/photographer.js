@@ -1,13 +1,15 @@
 import { getJsonData } from "/scripts/utils/getJsonData.js";
 import { photographer, medias } from "/scripts/utils/Objects.js";
-import { displayModal, closeModal } from "/scripts/utils/contactForm.js";
+import { likesInit } from "/scripts/utils/likes.js";
+import { lightboxInit } from "/scripts/utils/modals/lightbox.js";
+import { contactModalDrawer } from "/scripts/utils/modals/contactModal.js";
 
 const url = (new URL(document.location.href));
 const photographerID = url.searchParams.get('id');
 
 let fullData; // Contiendra toutes les données du JSON "brutes"
-let currentPhotographer; // Contiendra uniquement les données filtrées du photographe
-let currentMedias; // Contiendra tous les médias de ce photographe
+export let currentPhotographer; // Contiendra uniquement les données filtrées du photographe
+export let currentMedias; // Contiendra tous les médias de ce photographe
 
 
 const startDrawingPage = async() => {
@@ -21,6 +23,8 @@ const headerDrawer = () => {
 // Génére un objet photographe puis la partie photograph-header à partir de cet objet
     createPhotographer();
     const cP = currentPhotographer;
+    const pageTitle = document.querySelector("#page-title");
+    pageTitle.innerHTML = `Fisheye - ${cP.name}`;
     const container = document.querySelector(".photograph-header");
     const newHtmlHeader =`
         <div class="photograph-header_text">
@@ -33,7 +37,8 @@ const headerDrawer = () => {
             <img src="photos/Photographers_ID_Photos/${cP.portrait+"_thumbnail.jpg"}" alt="Photo de profil de ${cP.name}"/>
         </div>`;
     container.innerHTML = newHtmlHeader;
-
+    const contactBtn = document.querySelector(".contact_button");
+    contactBtn.addEventListener("click", contactModalDrawer);
     mediasDrawer();
 };
 
@@ -55,13 +60,12 @@ const mediasDrawer = () => {
         let newHtmlMedia;
         const newCardElement = document.createElement("div");
         newCardElement.setAttribute("class", "media-card");
-        newCardElement.setAttribute("id", e.id);
         if (e.constructor.name === "image") {
             newHtmlMedia =`
-            <img tabindex="0" src="photos/${currentPhotographer.name}/${e.image}" alt="Photo intitulée : ${e.title}" title="Photo intitulée : ${e.title}">`;
+            <img class="media-img" id="${e.id}" tabindex="0" src="photos/${currentPhotographer.name}/${e.image}" alt="Photo intitulée : ${e.title}" title="Photo intitulée : ${e.title}">`;
         } else {
             newHtmlMedia =`
-            <video tabindex="0" title="Vidéo intitulée : ${e.title}" width="350" height="300">
+            <video class="media-video" id="${e.id}" tabindex="0" title="Vidéo intitulée : ${e.title}" width="350" height="300">
             <source src="photos/${currentPhotographer.name}/${e.video}" type="video/mp4">
             Votre navigateur ne supporte pas le lecteur de vidéos.
             </video>`;
@@ -70,8 +74,8 @@ const mediasDrawer = () => {
         <div class="media-card_text">
             <h3>${e.title}</h3>
             <div class="media-likes">
-                <p>${e.likes}</p>
-                <i class="fas fa-heart" tabindex="0" aria-label="Bouton J'aime, cliquable"></i>
+                <p id="count${e.id}">${e.likes}</p>
+                <i class="fas fa-heart likeBtn" id="${e.id}" tabindex="0" aria-label="Bouton J'aime, cliquable"></i>
             </div>
         </div>`;
         
@@ -79,7 +83,9 @@ const mediasDrawer = () => {
         newCardElement.innerHTML = newHtmlCard;
     });
 
-    insertDrawer();
+    likesInit();
+    widgetDrawer();
+    lightboxInit();
 };
 
 const createMedias = () => {
@@ -93,24 +99,24 @@ const createMedias = () => {
 };
 
 
-const insertDrawer = () => {
-// Génére l'insert des likes et du prix journalier en bas de page
+export const widgetDrawer = () => {
+// Génére le widget des likes et du prix journalier en bas de page
     let totalLikes = 0;
     currentMedias.forEach(e => {
         totalLikes += e.likes;
     });
 
-    const priceAndLikeInsert = document.querySelector(".priceandlike-insert");
-    const newHtmlInsert = `
+    const priceAndLikeWidget = document.querySelector(".priceandlike-widget");
+    const newHtmlWidget = `
         <p>${totalLikes}</p>
         <i class="fas fa-heart"></i>
         <p>${currentPhotographer.price}€ / jour</p>`;
-    priceAndLikeInsert.innerHTML = newHtmlInsert;
+        priceAndLikeWidget.innerHTML = newHtmlWidget;
 };
 
 
 // Lance le script si on est bien sur la page photographer.hmtl
 const body = document.querySelector("body");
 if (body.classList.contains("photographer-page")) {
-    document.body.onload = startDrawingPage
+    document.body.onload = startDrawingPage;
 };

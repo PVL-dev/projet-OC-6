@@ -1,3 +1,4 @@
+/* Section d'en-tête avec les infos du photographe */
 .photograph-header {
     display: flex;
     align-items: center;
@@ -62,8 +63,7 @@
 }
 
 
-
-
+/* Section affichant tous les médias du photographe */
 .medias_section {
     display: flex;
     flex-direction: column;
@@ -111,7 +111,14 @@
     height: 350px;
     width: auto;
 
+    cursor: pointer;
     border-radius: 6px;
+    box-shadow: 0px 0px 10px 1px #929292;
+    transition: box-shadow 250ms, transform 250ms;
+}
+.media-card img:hover, .media-card video:hover {
+    box-shadow: 0px 0px 20px 1px #929292;
+    transform: scale(1.02);
 }
 
 .media-card_text {
@@ -151,16 +158,46 @@
 }
 
 .media-card_text i {
-    font-weight: 600;
+    font-weight: 100;
+
+    cursor: pointer;
 
     margin-left: 8px;
     margin-right: 2px;
 }
+.media-card_text i:hover {
+    animation: shaking 250ms;
+}
+.media-card_text .liked {
+    font-weight: 600;
+    animation: rotate 750ms;
+}
+@keyframes shaking {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(10deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 
-
-
-.priceandlike-insert {
+/* Widget des likes et du prix */
+.priceandlike-widget {
     position: fixed;
     bottom: 0;
     right: 50px;
@@ -171,29 +208,118 @@
     background-color: #D3573C;
     border-radius: 6px 6px 0 0;
 
+    width: 375px;
     height: 65px;
 }
 
-.priceandlike-insert p {
+.priceandlike-widget p {
     font-size: 25px;
     margin: 0;
     margin-left: 40px;
 }
 
-.priceandlike-insert i {
+.priceandlike-widget i {
     font-size: 25px;
     margin-left: 5px;
     margin-right: 20px;
 }
+.priceandlike-widget i:hover {
+    animation: shaking 250ms;
+}
 
-.priceandlike-insert p:last-child {
+.priceandlike-widget p:last-child {
     margin-right: 40px;
 }
 
 
+/* Lightbox Médias */
+.lightbox {
+    position: fixed;
+    top: 0;
+
+    background-color: white;
+
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+
+    animation: lightboxClose 250ms;
+    animation-play-state: paused;
+    animation-fill-mode: forwards;
+}
+
+.lightbox-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+
+    height: 90%;
+    padding: 50px;
+}
+
+.lightbox i {
+    color: #901C1C;
+    font-size: 44px;
+
+    cursor: pointer;
+}
+
+.lightbox .leftBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1 10%;
+
+    height: 80%;
+}
+
+.lightbox img, .lightbox video {
+    object-fit: cover;
+    flex: 2 80%;
+    height: 80%;
+
+    border-radius: 6px;
+    box-shadow: 0px 0px 10px 1px #929292;
+}
+
+.lightbox .rightBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    flex: 1 10%;
+
+    height: 80%;
+}
+
+.lightbox .prevBtn, .lightbox .nextBtn {
+    margin-bottom: 35vh;
+}
+
+.lightbox-container h3 {
+    color: #901C1C;
+    font-size: 23px;
+    font-weight: 100;
+
+    flex: 4 100%;
+    margin-left: 10%;
+}
+
+@keyframes lightboxClose {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+}
 
 
-/* Fenêtre modale */
+/* Fenêtre modale de contact */
 #contact_modal {
     display: none;
 }
