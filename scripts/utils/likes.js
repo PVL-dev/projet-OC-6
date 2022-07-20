@@ -1,5 +1,4 @@
-import { widgetDrawer } from "/scripts/pages/photographer.js";
-import { currentMedias } from "/scripts/pages/photographer.js";
+import { widgetDrawer, currentMedias } from "../pages/photographer.js";
 
 export const likesInit = () => {
     const heartBtn = document.querySelectorAll(".likeBtn");

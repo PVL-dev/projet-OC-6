@@ -1,5 +1,5 @@
-import { currentMedias, currentPhotographer } from "/scripts/pages/photographer.js";
-import { medias } from "/scripts/utils/Objects.js";
+import { currentMedias, currentPhotographer } from "../../pages/photographer.js";
+import { medias } from "../objects.js";
 
 let currentMedia; // Contiendra le Json original du média sélectionné
 
@@ -50,12 +50,12 @@ const lightboxDrawer = (e) => {
     
     let newHtmlLightbox;
     if (currentMedia.image) {
-        let src = `/photos/${pathName}/${currentMedia.image}`;
+        let src = `photos/${pathName}/${currentMedia.image}`;
         const data = {src, title};
         newHtmlLightbox = imgDrawer(data);
     };
     if (currentMedia.video) {
-        let src = `/photos/${pathName}/${currentMedia.video}`;
+        let src = `photos/${pathName}/${currentMedia.video}`;
         const data = {src, title};
         newHtmlLightbox = videoDrawer(data);
     };
@@ -172,14 +172,14 @@ const nextLightboxDrawer = (cM) => {
     lightbox.id = cM.id.toString();
     if (cM.image) {
         let id = cM.id;
-        let src = `/photos/${pathName}/${cM.image}`;
+        let src = `photos/${pathName}/${cM.image}`;
         let title = cM.title;
 
         const data = {id, src, title};
         lightbox.innerHTML = imgDrawer(data);
     } else {
         let id = cM.id;
-        let src = `/photos/${pathName}/${cM.video}`;
+        let src = `photos/${pathName}/${cM.video}`;
         let title = cM.title;
 
         const data = {id, src, title};
@@ -196,3 +196,4 @@ const closeLightbox = () => {
         lightbox.remove();
     }, 300);
 };
+

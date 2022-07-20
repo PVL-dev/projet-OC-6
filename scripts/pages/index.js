@@ -1,5 +1,5 @@
-import { getJsonData } from "/scripts/utils/getJsonData.js";
-import { photographer } from "/scripts/utils/Objects.js";
+import { getJsonData } from "../utils/getJsonData.js";
+import { photographer } from "../utils/objects.js";
 
 let fullData; // Contiendra toutes les données du JSON "brutes"
 let photographersArray = [];

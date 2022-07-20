@@ -59,7 +59,7 @@
 			"id": 111,
 			"city": "Lyon",
 			"country": "France",
-			"tagline": "Manger, et puis prendre des photos",
+			"tagline": "Futur star de la photo",
 			"price": 450,
 			"portrait": "AnaisAhnee"
 		}
@@ -242,7 +242,7 @@
 			"photographerId": 527,
 			"title": "Rocky mountains from the air",
 			"video": "Travel_Rock_Mountains.mp4",
-			"likes": 23,
+			"likes": 21,
 			"date": "2017-03-18",
 			"price": 45
 		},
@@ -288,7 +288,7 @@
 			"title": "Portrait Sunkiss",
 			"image": "Portrait_Sunkissed.jpg",
 			"likes": 66,
-			"date": "2018-05-24",
+			"date": "2019-05-24",
 			"price": 45
 		},
 		{
@@ -306,7 +306,7 @@
 			"title": "Alexandra",
 			"image": "Portrait_Alexandra.jpg",
 			"likes": 95,
-			"date": "2018-11-02",
+			"date": "2016-11-02",
 			"price": 45
 		},
 		{

@@ -1,8 +1,9 @@
-import { getJsonData } from "/scripts/utils/getJsonData.js";
-import { photographer, medias } from "/scripts/utils/Objects.js";
-import { likesInit } from "/scripts/utils/likes.js";
-import { lightboxInit } from "/scripts/utils/modals/lightbox.js";
-import { contactModalDrawer } from "/scripts/utils/modals/contactModal.js";
+import { getJsonData } from "../utils/getJsonData.js";
+import { photographer, medias } from "../utils/objects.js";
+import { sortingInit, sortingMedias } from "../utils/sorting.js";
+import { likesInit } from "../utils/likes.js";
+import { lightboxInit } from "../utils/modals/lightbox.js";
+import { contactModalInit } from "../utils/modals/contactModal.js";
 
 const url = (new URL(document.location.href));
 const photographerID = url.searchParams.get('id');
@@ -16,6 +17,7 @@ const startDrawingPage = async() => {
 // Récupére les données du fichier JSON et lance la fonction de création du photograph-header
     fullData = await getJsonData();
     headerDrawer();
+    sortingInit();
 };
 
 
@@ -37,8 +39,7 @@ const headerDrawer = () => {
             <img src="photos/Photographers_ID_Photos/${cP.portrait+"_thumbnail.jpg"}" alt="Photo de profil de ${cP.name}"/>
         </div>`;
     container.innerHTML = newHtmlHeader;
-    const contactBtn = document.querySelector(".contact_button");
-    contactBtn.addEventListener("click", contactModalDrawer);
+    contactModalInit();
     mediasDrawer();
 };
 
@@ -52,10 +53,14 @@ const createPhotographer = () => {
 };
 
 
-const mediasDrawer = () => {
+export const mediasDrawer = (e) => {
 // Génére la partie medias_section
-    createMedias();
     const container = document.querySelector(".medias_container");
+    container.replaceChildren();
+
+    createMedias();
+    sortingMedias(e);
+
     currentMedias.forEach(e => {
         let newHtmlMedia;
         const newCardElement = document.createElement("div");
@@ -120,3 +125,4 @@ const body = document.querySelector("body");
 if (body.classList.contains("photographer-page")) {
     document.body.onload = startDrawingPage;
 };
+
