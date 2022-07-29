@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
@@ -8,18 +8,20 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
     <title id="page-title">Fisheye - </title>
   </head>
+
   <body class="photographer-page">
     <header>
       <a href="index.html"><img src="assets/images/logo.png" class="logo" alt="Page d'acceuil de FishEye"/></a>
     </header>
+
     <main id="main">
       <div class="photograph-header"></div>
 
       <div class="medias_section">
         <div class="medias_filter">
-          <p>Trier par</p>
+          <h2>Trier par</h2>
           <div class="menu_container">
-            <button class="sorting_menu btn" aria-label="sortingMenu" aria-expanded="false">
+            <button class="sorting_menu btn" aria-label="Popularité" role="button" aria-haspopup="listbox" aria-expanded="false">
               <span>Popularité</span>
               <i class="fa fa-angle-down"></i>
             </button>
@@ -31,14 +33,12 @@
 
       <div class="priceandlike-widget"></div>
     </main>
+
     <div id="contact_modal">
-			<div class="modal">
+			<div class="modal" role="dialog" aria-labelledby="contact_title">
 				<header>
-          <div>
-            <h2>Contactez-moi</h2>
-            <h2 id="contact_title"></h2>
-          </div>
-          <img class="closeBtn" src="assets/icons/close.svg" alt=""/>
+          <div id="contact_title"></div>
+          <img class="closeBtn" aria-label="Fermer la fenêtre de contact" role="button" src="assets/icons/close.svg" alt=""/>
         </header>
 				<form 
           name="contactForm" 
@@ -61,10 +61,11 @@
 						<label for="message">Votre message</label>
 						<textarea id="message" name="message" type="text" minlength="15" cols="30" rows="3" required></textarea>
 					</div>
-          <button class="submit_button">Envoyer</button>
+          <button class="submit_button" aria-label="Envoyer le formulaire de contact" role="button">Envoyer</button>
 				</form>
 			</div>
 		</div>
+
     <script type="module" src="scripts/pages/photographer.js"></script>
   </body>
 </html>

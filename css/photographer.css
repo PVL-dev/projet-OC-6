@@ -1,4 +1,8 @@
 /* Section d'en-tête avec les infos du photographe */
+body.modal-open {
+    overflow: hidden;
+}
+
 .photograph-header {
     display: flex;
     align-items: center;
@@ -22,7 +26,7 @@
     margin: 0;
 }
 
-.photograph-header_text h3 {
+.photograph-header_text h2 {
     color: #901C1C;
     font-size: 23px;
     font-weight: 100;
@@ -86,7 +90,7 @@
     height: 70px;
 }
 
-.medias_filter > p {
+.medias_filter > h2 {
     font-size: 20px;
     font-weight: bold;
 
@@ -245,7 +249,7 @@
     align-items: center;
 }
 
-.media-card_text p, .media-card_text i {
+.media-card_text h4, .media-card_text i {
     color: #901C1C;
     font-size: 23px;
     font-weight: 800;
@@ -308,7 +312,7 @@
     height: 65px;
 }
 
-.priceandlike-widget p {
+.priceandlike-widget h4 {
     font-size: 25px;
     margin: 0;
     margin-left: 40px;
@@ -323,7 +327,7 @@
     animation: shaking 250ms;
 }
 
-.priceandlike-widget p:last-child {
+.priceandlike-widget h4:last-child {
     margin-right: 40px;
 }
 
@@ -426,17 +430,33 @@
 }
 
 .modal {
-    border-radius: 10px;
-    background-color: #DB8876;
-    width: 50%;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+
+    border-radius: 10px;
+    border: 2px solid #DB8876;
+    background-color: #DB8876;
+
+    overflow: auto;
+    width: 50%;
+    min-width: 350px;
+    max-width: 650px;
+    height: 80%;
+    
     padding: 35px;
     padding-top: 10px;
     padding-bottom: 20px;
-    margin: auto;
+}
+.modal::-webkit-scrollbar {
+    background: none;
+    width: 10px;
+}
+.modal::-webkit-scrollbar-thumb {
+    background-color: #929292;
+    border-radius: 15px;
 }
 
 .modal header {

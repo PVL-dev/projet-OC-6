@@ -1,9 +1,9 @@
-import { getJsonData } from "../utils/getJsonData.js";
-import { photographer, medias } from "../utils/objects.js";
-import { sortingInit, sortingMedias } from "../utils/sorting.js";
-import { likesInit } from "../utils/likes.js";
-import { lightboxInit } from "../utils/modals/lightbox.js";
-import { contactModalInit } from "../utils/modals/contactModal.js";
+import { getJsonData } from '../utils/getJsonData.js';
+import { photographer, medias } from '../utils/objects.js';
+import { sortingInit, sortingMedias } from '../utils/sorting.js';
+import { likesInit } from '../utils/likes.js';
+import { lightboxInit } from '../utils/modals/lightbox.js';
+import { contactModalInit } from '../utils/modals/contactModal.js';
 
 const url = (new URL(document.location.href));
 const photographerID = url.searchParams.get('id');
@@ -25,18 +25,18 @@ const headerDrawer = () => {
 // Génére un objet photographe puis la partie photograph-header à partir de cet objet
     createPhotographer();
     const cP = currentPhotographer;
-    const pageTitle = document.querySelector("#page-title");
+    const pageTitle = document.querySelector('#page-title');
     pageTitle.innerHTML = `Fisheye - ${cP.name}`;
-    const container = document.querySelector(".photograph-header");
+    const container = document.querySelector('.photograph-header');
     const newHtmlHeader =`
         <div class="photograph-header_text">
             <h1>${cP.name}</h1>
-            <h3>${cP.city}, ${cP.country}</h3>
+            <h2>${cP.city}, ${cP.country}</h2>
             <p>${cP.tagline}</p>
         </div>
-        <button class="contact_button">Contactez-moi</button>
+        <button class="contact_button" aria-label="Cliquez pour me contacter">Contactez-moi</button>
         <div class="photograph-header_img">
-            <img src="photos/Photographers_ID_Photos/${cP.portrait+"_thumbnail.jpg"}" alt="Photo de profil de ${cP.name}"/>
+            <img src="photos/Photographers_ID_Photos/${cP.portrait+'_thumbnail.jpg'}" alt="Photo de profil de ${cP.name}"/>
         </div>`;
     container.innerHTML = newHtmlHeader;
     contactModalInit();
@@ -47,7 +47,7 @@ const createPhotographer = () => {
 // Crée l'objet photographer correspondant à l'ID récupéré dans l'URL
     fullData.photographersData.forEach(e => {
         if (e.id.toString() === photographerID) {
-            currentPhotographer = new photographer(e.name, e.id, e.city, e.country, e.tagline, e.price, e.portrait)
+            currentPhotographer = new photographer(e.name, e.id, e.city, e.country, e.tagline, e.price, e.portrait);
         };
     });
 };
@@ -55,7 +55,7 @@ const createPhotographer = () => {
 
 export const mediasDrawer = (e) => {
 // Génére la partie medias_section
-    const container = document.querySelector(".medias_container");
+    const container = document.querySelector('.medias_container');
     container.replaceChildren();
 
     createMedias();
@@ -63,24 +63,24 @@ export const mediasDrawer = (e) => {
 
     currentMedias.forEach(e => {
         let newHtmlMedia;
-        const newCardElement = document.createElement("div");
-        newCardElement.setAttribute("class", "media-card");
-        if (e.constructor.name === "image") {
+        const newCardElement = document.createElement('div');
+        newCardElement.setAttribute('class', 'media-card');
+        if (e.constructor.name === 'image') {
             newHtmlMedia =`
-            <img class="media-img" id="${e.id}" tabindex="0" src="photos/${currentPhotographer.name}/${e.image}" alt="Photo intitulée : ${e.title}" title="Photo intitulée : ${e.title}">`;
+            <img class="media-img" id="${e.id}" tabindex="0" src="photos/${currentPhotographer.name}/${e.image}" alt="${e.title}, cliquez pour agrandir" >`;
         } else {
             newHtmlMedia =`
-            <video class="media-video" id="${e.id}" tabindex="0" title="Vidéo intitulée : ${e.title}" width="350" height="300">
-            <source src="photos/${currentPhotographer.name}/${e.video}" type="video/mp4">
-            Votre navigateur ne supporte pas le lecteur de vidéos.
+            <video class="media-video" id="${e.id}" tabindex="0" title="${e.title}, cliquez pour agrandir" width="350" height="300">
+                <source src="photos/${currentPhotographer.name}/${e.video}" type="video/mp4">
+                Votre navigateur ne supporte pas le lecteur de vidéos.
             </video>`;
         };
         let newHtmlCard = newHtmlMedia +`
         <div class="media-card_text">
             <h3>${e.title}</h3>
             <div class="media-likes">
-                <p id="count${e.id}">${e.likes}</p>
-                <i class="fas fa-heart likeBtn" id="${e.id}" tabindex="0" aria-label="Bouton J'aime, cliquable"></i>
+                <h4 id="count${e.id}">${e.likes}</h4>
+                <i class="fas fa-heart likeBtn" id="${e.id}" tabindex="0" aria-label="Bouton J'aime"></i>
             </div>
         </div>`;
         
@@ -111,18 +111,18 @@ export const widgetDrawer = () => {
         totalLikes += e.likes;
     });
 
-    const priceAndLikeWidget = document.querySelector(".priceandlike-widget");
+    const priceAndLikeWidget = document.querySelector('.priceandlike-widget');
     const newHtmlWidget = `
-        <p>${totalLikes}</p>
+        <h4>${totalLikes}</h4>
         <i class="fas fa-heart"></i>
-        <p>${currentPhotographer.price}€ / jour</p>`;
+        <h4>${currentPhotographer.price}€ / jour</h4>`;
         priceAndLikeWidget.innerHTML = newHtmlWidget;
 };
 
 
 // Lance le script si on est bien sur la page photographer.hmtl
-const body = document.querySelector("body");
-if (body.classList.contains("photographer-page")) {
+const body = document.querySelector('body');
+if (body.classList.contains('photographer-page')) {
     document.body.onload = startDrawingPage;
 };
 

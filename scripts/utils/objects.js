@@ -48,3 +48,4 @@ class video extends medias {
       this.video = data.video;
     };
 };
+

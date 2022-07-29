@@ -1,5 +1,5 @@
-import { getJsonData } from "../utils/getJsonData.js";
-import { photographer } from "../utils/objects.js";
+import { getJsonData } from '../utils/getJsonData.js';
+import { photographer } from '../utils/objects.js';
 
 let fullData; // Contiendra toutes les données du JSON "brutes"
 let photographersArray = [];
@@ -9,7 +9,7 @@ const startDrawingPage = async() => {
 // Récupére les données du fichier JSON, les interpréte et lance la fonction de création de la page
     fullData = await getJsonData();
     fullData.photographersData.forEach(e => {
-        photographersArray.push(new photographer(e.name, e.id, e.city, e.country, e.tagline, e.price, e.portrait))
+        photographersArray.push(new photographer(e.name, e.id, e.city, e.country, e.tagline, e.price, e.portrait));
     });
     pageDrawer();
 };
@@ -18,12 +18,12 @@ const startDrawingPage = async() => {
 const pageDrawer = () => {
 // Génére un objet photographe puis la partie photograph-header à partir de cet objet
     photographersArray.forEach(e => {
-        const container = document.querySelector(".photographer_section");
-        const newCard = document.createElement("div");
-        newCard.setAttribute("class", "card_container")
-        const picture = `photos/Photographers_ID_Photos/${e.portrait+"_thumbnail.jpg"}`;
+        const container = document.querySelector('.photographer_section');
+        const newCard = document.createElement('div');
+        newCard.setAttribute('class', 'card_container');
+        const picture = `photos/Photographers_ID_Photos/${e.portrait+'_thumbnail.jpg'}`;
         const newHtml =`
-            <a href="photographer.html?id=${e.id}">
+            <a href="photographer.html?id=${e.id}" aria-label="Galerie de ${e.name}">
                 <img src="${picture}" alt="">
                 <h2>${e.name}</h2>
             </a>
@@ -40,7 +40,8 @@ const pageDrawer = () => {
 
 
 // Lance le script si on est bien sur la page index.hmtl
-const body = document.querySelector("body") 
-if (body.classList.contains("index-page")) {
-    document.body.onload = startDrawingPage
+const body = document.querySelector('body');
+if (body.classList.contains('index-page')) {
+    document.body.onload = startDrawingPage;
 };
+
