@@ -67,10 +67,10 @@ export const mediasDrawer = (e) => {
         newCardElement.setAttribute('class', 'media-card');
         if (e.constructor.name === 'image') {
             newHtmlMedia =`
-            <img class="media-img" id="${e.id}" tabindex="0" src="photos/${currentPhotographer.name}/${e.image}" alt="${e.title}, cliquez pour agrandir" >`;
+            <img class="media-img" id="media${e.id}" tabindex="0" src="photos/${currentPhotographer.name}/${e.image}" alt="${e.title}, cliquez pour agrandir" >`;
         } else {
             newHtmlMedia =`
-            <video class="media-video" id="${e.id}" tabindex="0" title="${e.title}, cliquez pour agrandir" width="350" height="300">
+            <video class="media-video" id="media${e.id}" tabindex="0" title="${e.title}, cliquez pour agrandir" width="350" height="300">
                 <source src="photos/${currentPhotographer.name}/${e.video}" type="video/mp4">
                 Votre navigateur ne supporte pas le lecteur de vidéos.
             </video>`;

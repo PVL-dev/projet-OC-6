@@ -30,7 +30,8 @@ const recoveryMedia = (e) => {
 // Récupére le Json original du media sélectionné
     currentMedia = [];
     currentMedias.forEach(data => {
-        if (data.id.toString() === e.target.id) {
+        let mediaID = e.target.id.replace('media', '');
+        if (data.id.toString() === mediaID) {
             currentMedia.push(new medias(data.id, data.photographerId, data.title, data.likes, data.date, data.price).createMedia(data)); // Crée un objet de la classe medias
         };
     });
